@@ -11,28 +11,53 @@ class DirectedGraph():
         self.nodes = set()
 
     def add_edge(self, u, v):
-        self.edges.append((u,v))
+        """Add the edge (u, v) to the graph.
+
+        u : (hashable)
+            source node
+        v : (hashable)
+            destination node
+        """
+
         if u not in self.successors:
             self.successors[u] = []
         if v not in self.predecessors:
             self.predecessors[v] = []
         if v in self.successors[u]:
             raise Exception("Graph already contains edge.")
+
+        self.edges.append((u,v))
         self.successors.get(u).append(v)
         self.predecessors.get(v).append(u)
         self.nodes.add(u)
         self.nodes.add(v)
 
     def get_successors(self, u):
+        """Return nodes that are direct neighbours of u,
+        i.e., all nodes v s.t. (u, v) exists.
+
+        u : (hashable)
+            node in the graph
+        """
         return self.successors.get(u, [])
 
     def get_predecessors(self, u):
+        """Return nodes that have u as direct neighbours,
+        i.e., all nodes v s.t. (v, u) exists.
+
+        u : (hashable)
+            node in the graph
+        """
         return self.predecessors.get(u, [])
 
     def get_nodes(self):
+        """Return the set of all nodes in the graph.
+        """
         return self.nodes
 
     def get_edges(self):
+        """Return the set of all edges in the graph.
+        """
         return self.edges
 
 
@@ -71,13 +96,19 @@ def is_topological_sort(graph, sequence):
 
 
 def kahns_algo(graph):
-    """Calculate a topological sort of a given directed graph.
+    """Calculate a topological sort of a given directed graph using
+    Kahn's algorithm [1].
 
     graph : (DirectedGraph)
         a directed graph
 
-    raises :
-        Exception if the graph contains a cycle
+    raises : Exception
+        if the graph contains a cycle
+
+    References
+    ----------
+    [1] Kahn, Arthur B. "Topological sorting of large networks."
+        Communications of the ACM 5.11 (1962): 558-562.
     """
     # initialize degree map
     degrees = {}
@@ -105,7 +136,12 @@ def kahns_algo(graph):
 def topological_sort(graph):
     """
     Calculate a topological sort of the nodes in graph.
-    Exception if the graph contains a cycle.
+
+    graph : (DirectedGraph)
+        a directed graph
+
+    raises : Exception
+        if the graph contains a cycle.
     """
     return kahns_algo(graph)
 
